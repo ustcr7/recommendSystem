@@ -1,0 +1,127 @@
+
+if(Double.isNaN(pvy) ) {
+						//|| Double.isNaN(postProb[u][i][z]*(Math.log(pvy)+Math.log(pz)))
+						Util.p(rateMatrix[u][i]+"><"+mean[i][z]+"><"+deviation[i][z]+"><"+Math.sqrt(deviation[i][z])+"<");
+						Util.p(normal);
+						Util.p(pz+" --"+pvy+"......");
+//						Util.p(postProb[u][i][z]*(Math.log(pvy)+Math.log(pz)));
+					}
+
+
+if(pvy<NEARZERO) Util.p("normal"+normal);
+for(int u=1;u<=USERNUM;u++){
+			if(itemSets[u].size()==0) continue;	//如果u没有选择任何用户那么他的p(z|u)只能为初始的均匀分布
+			Iterator<Integer> items = itemSets[u].iterator();
+			double p[]  = new double[CATEGORY+1];
+			double total=0;
+			for(int z=1;z<=CATEGORY;z++){
+				items = itemSets[u].iterator();
+				while(items.hasNext()){
+					int i = items.next();
+					total+=postProb[u][i][z];
+					p[z]+=postProb[u][i][z];
+				}
+			}
+			for(int z=1;z<=CATEGORY;z++){
+				prob_uz[u][z]=p[z]/total;
+			}
+			if(u==1) Util.p(prob_uz[1]);
+		}
+/////////////////
+for(int u=1;u<=USERNUM;u++){
+			if(itemSets[u].size()==0) continue;	//如果u没有选择任何用户那么他的p(z|u)只能为初始的均匀分布
+			Iterator<Integer> items = itemSets[u].iterator();
+			double p[]  = new double[CATEGORY+1];
+			double total=0;
+			for(int z=1;z<=CATEGORY;z++){
+				while(items.hasNext()){
+					int i = items.next();
+					total+=postProb[u][i];
+				}
+			}
+			items = itemSets[u].iterator();
+			for(int z=1;z<=CATEGORY;z++){
+				double part=0;
+				while(items.hasNext()){
+					int i = items.next();
+					part+=postProb[u][i];
+				}
+
+				prob_uz[u][z]=part/total;
+				Util.p(u+":"+part+" "+total);
+			}
+
+		}
+		////////////////////////
+		for(int u=1;u<=USERNUM;u++){
+			if(itemSets[u].size()==0) continue;	//如果u没有选择任何用户那么他的p(z|u)只能为初始的均匀分布
+			Iterator<Integer> items = itemSets[u].iterator();
+//			double p[]  = new double[CATEGORY+1];
+			double total=0;
+			for(int z=1;z<=CATEGORY;z++){
+				items = itemSets[u].iterator();
+				while(items.hasNext()){
+					int i = items.next();
+					total+=postProb[u][i][z];
+				}
+			}
+//			Util.p(total);
+			Iterator<Integer> item2 = itemSets[u].iterator();
+			for(int z=1;z<=CATEGORY;z++){
+				double part=0;
+				while(item2.hasNext()){
+					int i = item2.next();
+					part+=postProb[u][i][z];
+				}
+				Util.p(part);
+				prob_uz[u][z]=part/total;
+//				Util.p(u+":"+part+" "+total);
+			}
+		}
+		////////////
+			@Deprecated
+	private void computePostProbability(){
+		for(int u=1;u<=USERNUM;u++){
+			for(int i=1;i<=ITEMNUM;i++){
+				double total = 0;
+				for(int z=1;z<=CATEGORY;z++){
+					double pv = (rateMatrix[u][i]-mean[i][z])/deviation[i][z];
+					total+=(prob_uz[u][z]*Util.Ni(pv));
+				}
+				for(int z=1;z<=CATEGORY;z++){
+					double pv = (rateMatrix[u][i]-mean[i][z])/deviation[i][z];
+					pv =(prob_uz[u][z]*Util.Ni(pv));
+					postProb[u][i][z]=(pv/total);
+				}
+			}
+		}
+		
+	}
+	///
+				if(count==0){
+				Util.writeIntoTxt(mean,"E:\\mean"+count+".txt");
+				Util.writeIntoTxt(deviation,"E:\\devia"+count+".txt");
+				Util.writeIntoTxt(prob_uz,"E:\\puz"+count+".txt");
+			}
+			////
+				private void computePostProbability2(){
+		for(int u=1;u<=USERNUM;u++){
+			Iterator<Integer> items = itemSets[u].iterator();
+			while(items.hasNext()){
+				int i = items.next();
+				double total = 0;
+				for(int z=1;z<=CATEGORY;z++){
+					double pv = (rateMatrix[u][i]-mean[i][z])/deviation[i][z];
+					total+=(prob_uz[u][z]*Util.Ni(pv));
+				}
+				for(int z=1;z<=CATEGORY;z++){
+					double pv = (rateMatrix[u][i]-mean[i][z])/deviation[i][z];
+					pv =(prob_uz[u][z]*Util.Ni(pv));
+					postProb[u][i][z]=(pv/total);
+				}
+			}
+		}
+		
+	}
+	///
+	

@@ -1,0 +1,29 @@
+/*int userId = 456;
+		int itemId = 294;
+		System.out.println(m.predict(userId, itemId));*/
+		
+		//test
+		//m.computeDev();
+		/*for(int i=1;i<=d.getItemNum();i++){
+			for(int j=1;j<=d.getItemNum();j++){
+				System.out.println(i+" "+j+" "+m.devMatrix[i][j]+" ");
+			}
+		}*/
+
+		//evaluate
+		
+		for(int i=1;i<=5;i++){
+			System.out.println(i+"****");
+			long start = System.currentTimeMillis();
+			DataSet d = new DataSet("E:\\F\\IT\\DataMining\\movielens\\ml-100k\\u"+i+".base");
+			double ave = d.getTotalAverage(); 	System.out.println(ave);
+			Model m = new WeightedSlopeOne();
+			m.setDataSet(d);
+			DataSet dt = new DataSet("E:\\F\\IT\\DataMining\\movielens\\ml-100k\\u"+i+".test");
+			Evaluator e = new Evaluator();
+			e.setDataSet(dt);
+			e.getMAEAndRMSE(m);
+			long finish = System.currentTimeMillis();
+			System.out.println("time"+(double)(finish-start)/60000+"mins");
+			System.gc();
+		}

@@ -1,0 +1,73 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+public void computeWeightMatrix(){
+		for(int i=1;i<=ITEMNUM;i++){
+Util.mark();
+			for(int j=1;j<=ITEMNUM;j++){
+				for(int u=1;u<=USERNUM;u++){
+					weightMatrix[i][i]+=(rateMatrix[u][i]*rateMatrix[u][j]/userDegree[u]);
+				}
+				weightMatrix[i][i]/=itemDegree[j];
+			}
+Util.mark(i+" ");
+		}
+	}
+
+
+DataSet d = new DataSet(datafile,"train");
+		Model m =new BipartiteNetwork(d);
+		DataSet dt = new DataSet(file2,"test");
+		Evaluator e = new Evaluator(dt);
+double hitRate = 0;
+		for(int u=USERNUM;u>0;u--){
+			int hits=0;
+			int [] recom = m.getTopN(u, n);
+Util.p(u+"*********************");Util.printArray(recom);
+			Iterator<Pair> itr = scoreMap.keySet().iterator();
+			
+			while(itr.hasNext()){
+				Pair p = (Pair)itr.next();
+				if(p.u==u){
+					int i = p.i;
+					if(Util.exists(recom,i))hits++;
+				}
+			}
+Util.p("\n"+u+"命中率: "+(double)hits/n);	//if(u>500)
+			hitRate+=(hits/n);
+		}
+		return ((double)hitRate/testNum);
+
+Vector<Integer> recomm = new Vector<Integer>() ;
+Util.sortArray(weight);		//注意排序代码没有完成！！！！！！
+		int count=0;
+		for(int i=1;i<=ITEMNUM && count<n;i++){	//取n个权重最高  用户没评过分 的项目
+			if(rateMatrix[u][i]==0) {
+				recomm.add(count,i);
+				count++;
+			}
+		}
+
+		Util.printArray(this.itemDegree);
+		System.out.println("*********************");
+		Util.printArray(this.userDegree);
+Arrays.sort(array);
+		float [] rst = new float[array.length];
+		float tmp = array[0];
+		for(int i=0;i<array.length-1;i++){
+			array[i]=array[array.length-1-i];
+		}
+		array = rst;
